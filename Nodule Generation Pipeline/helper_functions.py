@@ -31,11 +31,7 @@ import hydra
 import os
 import torch
 import omegaconf
-import qct_cache
-from qct_cache.cache_loading.cache_loader import CacheLoader
-from qct_cache.utils.box_utils import read_bbox
 import matplotlib.pyplot as plt
-from qct_cache.default_configs import get_default_cache_loader
 import os
 # from ct_viewer import CTViewer
 os.chdir("../../qct_cache_utils/notebooks/")

@@ -759,51 +759,7 @@ print(recommendations)
 
 ---
 
-## 🎓 Technical Details
-
-### Stage 1 - Synthetic Nodule Generation
-
-**Architecture**: 3D GAN (WGAN-GP variant)
-- Generator: 3D ConvTranspose layers
-- Discriminator: 3D Conv + Spectral Normalization
-- Loss: Wasserstein loss with gradient penalty
-
-**Training**:
-- Dataset: LIDC-IDRI (1,018 CT scans)
-- Augmentation: Random rotation, scaling, elastic deformation
-- Training time: ~48 hours on RTX 3090
-
-**Evaluation**:
-- Fréchet Inception Distance (FID): 12.4
-- Visual Turing Test: 78% realistic rating
-
----
-
-### Stage 2 - Nodule Classification
-
-**Architecture**: 3D ResNet-34
-- Input: 64×64×64 CT patches
-- Output: Binary (Cancerous/Benign)
-- Preprocessing: HU windowing (-1000 to 400)
-
-**Training**:
-- Dataset: LIDC-IDRI (real) + Synthetic (Stage 1)
-- Class balance: 50/50 (balanced with synthetic data)
-- Optimizer: AdamW (lr=1e-4, weight_decay=1e-5)
-- Augmentation: Random flip, rotation, Gaussian noise
-- Training time: ~24 hours on RTX 3090
-
-**Performance**:
-```
-Confusion Matrix:
-                Predicted
-              Cancer  Benign
-Actual Cancer   941    59    (94.1% sensitivity)
-       Benign   93     907   (90.7% specificity)
-
-Overall Accuracy: 92.4%
-AUC-ROC: 0.96
-```
+## Technical Details
 
 ---
 
@@ -902,7 +858,7 @@ generate_recommendations → classify_urgency → END
 
 ---
 
-## 🔒 Privacy & Security
+## Privacy & Security
 
 - **No Data Storage**: CT scans processed in-memory, not stored
 - **Local Processing**: Inference runs locally (Stages 1-3)
@@ -912,7 +868,7 @@ generate_recommendations → classify_urgency → END
 
 ---
 
-## 🛠️ Development & Customization
+## Development & Customization
 
 ### Adding New Pathologies
 
@@ -941,7 +897,7 @@ Your custom prompt template here...
 
 ---
 
-## 📚 Dataset Information
+## Dataset Information
 
 ### Training Datasets
 
@@ -962,7 +918,7 @@ Your custom prompt template here...
 
 ---
 
-## 🏆 Hackathon Highlights
+## Hackathon Highlights
 
 ### Innovation
 - **4-stage end-to-end pipeline**: From raw CT to actionable insights
@@ -990,7 +946,7 @@ Your custom prompt template here...
 
 ---
 
-## 🤝 Team & Contributions
+## Team & Contributions
 
 **Developed by**: Pulmo.ai
 **Hackathon**: Loop health hackathon 2025
@@ -1005,7 +961,7 @@ Your custom prompt template here...
 
 ---
 
-## 📄 License
+## License
 
 This project is submitted for hackathon evaluation. 
 
@@ -1016,7 +972,7 @@ For production use, please ensure compliance with:
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -1052,7 +1008,7 @@ llm = OpenAI(request_timeout=60, max_retries=3)
 
 ---
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - [ ] Integration with PACS systems
 - [ ] Multi-language support (Hindi, regional languages)
@@ -1065,7 +1021,7 @@ llm = OpenAI(request_timeout=60, max_retries=3)
 
 ---
 
-## 🎉 Thank You!
+## Thank You!
 
 Thank you for reviewing **Pulmo.ai**. We believe this system can significantly improve early lung cancer detection and save lives through accessible, AI-powered screening.
 

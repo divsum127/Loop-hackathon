@@ -60,17 +60,17 @@ While academic research has produced impressive AI models for lung cancer screen
 **The bottleneck isn't algorithms—it's data.**
 
 Training production-grade AI requires:
-- ✅ **Thousands of high-quality CT scans** (with access to public datasets)
-- ❌ **Expert-annotated ground truth labels** (extremely expensive: $100-500 per scan)
-- ❌ **Diverse pathology examples** (rare cancers are underrepresented)
-- ❌ **Balanced datasets** (99% of nodules are benign, creating severe class imbalance)
+- No Issue : **Thousands of high-quality CT scans** (with access to public datasets)
+- Issue : **Expert-annotated ground truth labels** (extremely expensive: $100-500 per scan)
+- Issue : **Diverse pathology examples** (rare cancers are underrepresented)
+- Issue : **Balanced datasets** (99% of nodules are benign, creating severe class imbalance)
 
 **Industry Reality:**
 - Annotating 10,000 CT scans with expert radiologists: **$1M - $5M** budget
 - Timeline: **2-3 years** for data collection and labeling
 - Result: Most startups and research teams **cannot afford this**
 
-### 💡 Our Solution: Start with the Data Foundation
+### Our Solution: Start with the Data Foundation
 
 **This is why we invested heavily in Stage 1 (Synthetic Nodule Generation).**
 

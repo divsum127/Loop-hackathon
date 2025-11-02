@@ -1,4 +1,4 @@
-# Task 1
+# Task 1- [Video](https://drive.google.com/file/d/1hzaprFU5M9wlLN9b-0pBYChKxzhgr-_r/view?usp=sharing)
 # [Synthetic Nodule Generation](https://github.com/divsum127/Loop-hackathon/tree/main/Nodule%20Generation%20Pipeline)
 
 ## Source Code Path-
@@ -179,9 +179,7 @@ This module contains all visualization utilities, shape generation routines, geo
 - **`split_boundary_into_holes(boundary_points, eps, min_samples)`**: Use DBSCAN to segment boundary points into individual hole surfaces.
 
 
-## 📓 `example.ipynb`
-
-No functions or classes defined. Presumably demonstrates usage of the above modules.
+## 📓 `Sythetic_Nodule_ex.ipynb`- example usage
 
 ---
 
@@ -197,7 +195,7 @@ No functions or classes defined. Presumably demonstrates usage of the above modu
 
 
 
-# Task 2
+# Task 2- [Video](https://drive.google.com/file/d/1J6ORYg4p4p6WcHfFsun16IQQUKBsXkNK/view?usp=sharing)
 
 # [Binary Lung Cancer Classifier (Chest CT) — Ensemble of CNN Backbones](https://github.com/divsum127/Loop-hackathon/tree/main/Detection%20Pipeline)
 

@@ -210,7 +210,7 @@ No functions or classes defined. Presumably demonstrates usage of the above modu
 
 # Task 2
 
-# Binary Lung Cancer Classifier (Chest CT) — Ensemble of CNN Backbones
+# [Binary Lung Cancer Classifier (Chest CT) — Ensemble of CNN Backbones](https://github.com/divsum127/Loop-hackathon/tree/main/Detection%20Pipeline)
 
 This repository/notebook implements a **binary classifier** that predicts whether a chest CT study indicates **Normal** or **Cancerous**. The approach centers on a **strong, diversity-driven ensemble** of convolutional backbones that balances representation power, generalization, and clinical robustness.
 

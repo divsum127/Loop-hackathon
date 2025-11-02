@@ -1,5 +1,5 @@
 # Task 1- [Video](https://drive.google.com/file/d/1hzaprFU5M9wlLN9b-0pBYChKxzhgr-_r/view?usp=sharing)
-# [Synthetic Nodule Generation](https://github.com/divsum127/Loop-hackathon/tree/main/Nodule%20Generation%20Pipeline)
+# [Synthetic Lung Nodule Generation in CT Scans](https://github.com/divsum127/Loop-hackathon/tree/main/Nodule%20Generation%20Pipeline)
 
 ## Source Code Path-
 * `fake_nodule_3d/src/fake_nodule_3d/nodule.py` - class Nodule() and class CTScan()

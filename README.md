@@ -12,7 +12,7 @@ Lung cancer remains one of the deadliest diseases worldwide, largely due to dela
 
 ## Overall Pipeline of our Solution
 ![WhatsApp Image 2025-11-02 at 15 15 46_eee0fd8f](https://github.com/user-attachments/assets/e014b8d1-76d3-479d-93c6-fa3ffce990c0)
-![WhatsApp Image 2025-11-02 at 15 17 10_983db148](https://github.com/user-attachments/assets/dd92424d-e677-4e00-b3a7-5aeaf9cc5d58)
+![WhatsApp Image 2025-11-02 at 19 09 14_9fc75d37](https://github.com/user-attachments/assets/4d3ea7e8-0c4c-4e54-bbe6-b3d784692b1e)
 ![WhatsApp Image 2025-11-02 at 15 16 12_b58a3393](https://github.com/user-attachments/assets/3d9f36d0-07f5-4a9b-b8ae-703dc793685d)
 ![WhatsApp Image 2025-11-02 at 15 07 14_ad457907](https://github.com/user-attachments/assets/2ab34963-7b7d-4b5d-b3c9-832d4bf607ba)
 

@@ -1,7 +1,5 @@
-<img width="845" height="554" alt="image" src="https://github.com/user-attachments/assets/94f46501-467e-4330-922d-5ada90dd3e92" />
-
-
 # Loop Hackathon- Team Pulmo.ai
+<img width="845" height="554" alt="image" src="https://github.com/user-attachments/assets/94f46501-467e-4330-922d-5ada90dd3e92" />
 
 ## Motivation
 Lung cancer remains one of the deadliest diseases worldwide, largely due to delayed diagnosis and limited access to expert radiological screening.

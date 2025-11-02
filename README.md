@@ -3,7 +3,7 @@
 
 ## Motivation
 
-### TL;DR — Why This Matters
+### TL;DR - Why This Matters
 
 **The Problem**: AI lung cancer detection models look great in research papers (90%+ accuracy), but **<5% of hospitals actually use them**. Why? Because production-grade AI needs three things current systems lack:
 1. **Accurate classification** (Stage 2) — struggles with real-world CT variability

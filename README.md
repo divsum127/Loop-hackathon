@@ -1,3 +1,6 @@
+<img width="845" height="554" alt="image" src="https://github.com/user-attachments/assets/94f46501-467e-4330-922d-5ada90dd3e92" />
+
+
 # Loop Hackathon- Team Pulmo.ai
 
 ## Motivation
@@ -381,90 +384,15 @@ pip install pydicom nibabel scikit-image  # if using DICOM/NIfTI flows
 
 ---
 
+# Stage 3 : CT Description using CT-Clip Transformers
 
-
-
-# Pulmo.ai - AI-Powered Lung Cancer Detection & Health Advisory System
-
-**Hackathon Submission - November 2025**
-
-> An end-to-end AI pipeline for lung cancer screening, detection, and personalized health recommendations using state-of-the-art deep learning and large language models.
 
 ---
 
-## Project Overview
-
-**Pulmo.ai** is a comprehensive 4-stage pipeline that transforms raw CT scans into actionable health insights:
-
-1. **Stage 1**: Synthetic Nodule Generation (addresses class imbalance in datasets)
-2. **Stage 2**: Cancerous/Non-Cancerous Nodule Classification
-3. **Stage 3**: CT Scan Description & Pathology Detection (CT-CLIP)
-4. **Stage 4**: Personalized Health Recommendations (LangGraph + GPT-4)
-
-### Key Features
-
-✅ **AI-Powered Analysis**: Detects 30+ lung cancer-related pathologies from chest CT scans  
-✅ **Synthetic Data Augmentation**: Generates realistic cancerous nodules to handle dataset imbalance  
-✅ **Binary Classification**: High-accuracy nodule malignancy prediction  
-✅ **Natural Language Reports**: Converts medical findings into plain English explanations  
-✅ **Personalized Recommendations**: Tailored health plans based on patient profile and CT findings  
-✅ **Interactive UI**: User-friendly Streamlit interface for clinicians and patients  
-
----
-
-## System Architecture
+## Structure
 
 ```
-
-┌─────────────────────────────────────────────────────────────────┐
-│                         INPUT: CT Scan (.nii.gz)                │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   STAGE 1       │
-                    │   Synthetic     │
-                    │   Nodule        │
-                    │   Generation    │
-                    │   (Training)    │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   STAGE 2       │
-                    │   Nodule        │
-                    │   Classification│
-                    │   Cancer/Normal │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   STAGE 3       │
-                    │   CT-CLIP       │
-                    │   Description   │
-                    │   (30+ terms)   │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   STAGE 4       │
-                    │   LangGraph     │
-                    │   Powered       │
-                    │   Health        │
-                    │  Recommendations│
-                    │   Agent         │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   OUTPUT        │
-                    │   • Report      │
-                    │   • Risk Score  │
-                    │   • Action Plan │
-                    └─────────────────┘
-```
-
----
-
-## 📁 Project Structure
-
-```
-submission/
+/
 │
 ├── app.py                          # Main Streamlit application
 ├── requirements.txt                # All Python dependencies
@@ -522,35 +450,11 @@ submission/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- **Python**: 3.10 or higher
-- **GPU**: NVIDIA GPU with 8GB+ VRAM (recommended for inference)
-- **RAM**: 16GB+ recommended
-- **Storage**: 10GB+ for models and data
-- **OpenAI API Key**: For Stage 4 recommendations ([Get one here](https://platform.openai.com/api-keys))
-
-### Installation
-
-1. **Clone or extract the submission folder:**
-   ```bash
-   cd submission
-   ```
-
-2. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Download pre-trained models:**
+- **Download pre-trained models:**
    ```bash
    # CT-CLIP models (Stage 3)
    cd models
@@ -560,63 +464,19 @@ submission/
    cd ..
    ```
 
-5. **Set up environment variables:**
+- **Set up environment variables:**
    ```bash
    cp .env.example .env
    # Edit .env and add your OpenAI API key:
    # OPENAI_API_KEY=sk-...
    ```
 
-6. **Run the application:**
+- **Run the application:**
    ```bash
    streamlit run app.py
    ```
 
    The app will open at `http://localhost:8501`
-
----
-
-## 📊 Stage-by-Stage Guide
-
-### Stage 1: Synthetic Nodule Generation
-
-**Purpose**: Address class imbalance in lung cancer datasets by generating realistic synthetic cancerous nodules.
-
-**Key Features**:
-- GAN-based nodule synthesis
-- Controllable nodule characteristics (size, shape, texture)
-- Augmentation pipeline for training data diversity
-- LIDC-IDRI dataset integration
-
-**Usage**:
-```bash
-cd synthetic_nodule_generation
-python generator.py --num_samples 1000 --output_dir ../data/synthetic_nodules
-```
-
-**Details**: See `synthetic_nodule_generation/README.md`
-
----
-
-### Stage 2: Nodule Classification
-
-**Purpose**: Binary classification of lung nodules as cancerous or non-cancerous.
-
-**Model**: 3D CNN (ResNet-18/34 backbone) trained on LIDC-IDRI + synthetic data
-
-**Performance**:
-- Accuracy: 92.4%
-- Sensitivity: 94.1%
-- Specificity: 90.7%
-- AUC-ROC: 0.96
-
-**Usage**:
-```bash
-cd nodule_classification
-python classifier.py --input_ct path/to/ct_scan.nii.gz --output results.json
-```
-
-**Details**: See `nodule_classification/README.md`
 
 ---
 

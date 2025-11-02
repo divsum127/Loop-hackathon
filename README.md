@@ -22,6 +22,8 @@ Lung cancer remains one of the deadliest diseases worldwide, largely due to dela
 
 # Task 1- [Video](https://drive.google.com/file/d/1hzaprFU5M9wlLN9b-0pBYChKxzhgr-_r/view?usp=sharing)
 # [Synthetic Lung Nodule Generation in CT Scans](https://github.com/divsum127/Loop-hackathon/tree/main/Nodule%20Generation%20Pipeline)
+![WhatsApp Image 2025-11-02 at 15 15 46_eee0fd8f](https://github.com/user-attachments/assets/e014b8d1-76d3-479d-93c6-fa3ffce990c0)
+
 
 ## Source Code Path-
 * `fake_nodule_3d/src/fake_nodule_3d/nodule.py` - class Nodule() and class CTScan()
@@ -218,8 +220,8 @@ This module contains all visualization utilities, shape generation routines, geo
 
 
 # Task 2- [Video](https://drive.google.com/file/d/1J6ORYg4p4p6WcHfFsun16IQQUKBsXkNK/view?usp=sharing)
-
 # [Binary Lung Cancer Classifier (Chest CT) — Ensemble of CNN Backbones](https://github.com/divsum127/Loop-hackathon/tree/main/Detection%20Pipeline)
+![WhatsApp Image 2025-11-02 at 19 09 14_9fc75d37](https://github.com/user-attachments/assets/4d3ea7e8-0c4c-4e54-bbe6-b3d784692b1e)
 
 This repository/notebook implements a **binary classifier** that predicts whether a chest CT study indicates **Normal** or **Cancerous**. The approach centers on a **strong, diversity-driven ensemble** of convolutional backbones that balances representation power, generalization, and clinical robustness.
 
@@ -385,6 +387,7 @@ pip install pydicom nibabel scikit-image  # if using DICOM/NIfTI flows
 ---
 
 # Stage 3 : CT Description using CT-Clip Transformers
+![WhatsApp Image 2025-11-02 at 15 16 12_b58a3393](https://github.com/user-attachments/assets/3d9f36d0-07f5-4a9b-b8ae-703dc793685d)
 
 
 ---
@@ -554,6 +557,7 @@ python lung_cancer_report_generator.py results.json
 ---
 
 ### Stage 4: Health Recommendations
+![WhatsApp Image 2025-11-02 at 15 07 14_ad457907](https://github.com/user-attachments/assets/2ab34963-7b7d-4b5d-b3c9-832d4bf607ba)
 
 **Purpose**: Generate personalized health recommendations using LangGraph and GPT-4.
 

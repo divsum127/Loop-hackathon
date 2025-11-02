@@ -596,6 +596,9 @@ print(recommendations)
 
 ## 🖥️ Using the Web Interface
 
+<img width="1884" height="894" alt="image" src="https://github.com/user-attachments/assets/929f1f9f-8f14-491d-a3c7-247d5082c1e8" />
+
+
 ### Upload CT Scan
 1. Open the app at `http://localhost:8501`
 2. Navigate to "CT Analysis" tab
@@ -861,8 +864,6 @@ streamlit run app.py --server.maxUploadSize=3000
 from langchain.llms.openai import OpenAI
 llm = OpenAI(request_timeout=60, max_retries=3)
 ```
-
----
 
 
 ---

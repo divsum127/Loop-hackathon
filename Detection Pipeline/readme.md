@@ -45,11 +45,14 @@ Chest CTs are heterogeneous across scanners, kernels, and patient habitus. Cance
 
 ### Fusion Strategy
 
-* **Logit Averaging (Late Fusion)**
-  Each backbone outputs raw logits `z_i ∈ ℝ²`. We compute
-  [
+* **Logit Averaging (Late Fusion)**  
+  Each backbone outputs raw logits \( z_i \in \mathbb{R}^2 \).  
+  The ensemble combines them as:
+
+  $$
   z_{\text{ens}} = \frac{1}{N}\sum_{i=1}^{N} z_i \quad \text{and} \quad p = \text{softmax}(z_{\text{ens}})
-  ]
+  $$
+
   This keeps decision boundaries flexible while avoiding catastrophic votes from any single model.
 
 * (Optional) **Weighted Logit Averaging**

@@ -34,16 +34,9 @@ import hydra
 import os
 import torch
 import omegaconf
-import qct_cache
-from qct_cache.cache_loading.cache_loader import CacheLoader
-from qct_cache.utils.box_utils import read_bbox
 import matplotlib.pyplot as plt
-from qct_cache.default_configs import get_default_cache_loader
+
 import os
-# from ct_viewer import CTViewer
-os.chdir("../../qct_cache_utils/notebooks/")
-from ct_viewer import CTViewer
-os.chdir("../../src/fake_nodule_3d/")
 from scipy.ndimage import zoom
 from scipy.ndimage import gaussian_filter
 import plotly.graph_objects as go
@@ -619,20 +612,18 @@ class Nodule():
 
 
 
-
 class CTScan():
 
     def __init__(self):
 
-        self.qct_cache_root = "/raid19/niraj/storage/qct_cache_may_2025"
-        self.master_df = pd.read_csv(os.path.join(self.qct_cache_root, "master_csv.csv"))
-        self.df = self.master_df[(self.master_df.annotated_by == 'merged_annot') & (self.master_df.mongo_collection_name == 'lidc')]
-        self.aids= self.df["annot_id"].values
-        self.sids = self.df["series_uid"].values
-        self.cache_loader = get_default_cache_loader()
+        self.master_df = None
+        self.df = None
+        self.aids= None
+        self.sids = None
         self.region = 'stats'
         self.nodule = None
-        self.sid= self.sids[np.random.randint(len(self.sids))]
+        self.sid= None
+        self.path = "train_1_a_1.nii"
         self.scans = None
         self.masks= None
         self.bboxes_masks = None
@@ -643,41 +634,41 @@ class CTScan():
         self.merged_ct = None
 
 
-    def load_ct(self, sid):
-        '''
-        loading a CT Scan using its series id
-        '''
 
-        self.sid = sid
+    def load_ct(self, path):
+      """
+      Returns:
+        arr: (Z, Y, X) float32 NumPy array
+        spacing: (dz, dy, dx) voxel size in mm
+        direction: 3x3 orientation cosines
+        origin: world-space origin (x,y,z)
+      """
+      img = sitk.ReadImage(path)                 # .nii or .nii.gz
+      arr = sitk.GetArrayFromImage(img).astype(np.float32)  # (Z, Y, X)
+      spacing = img.GetSpacing()[::-1]           # SITK gives (dx,dy,dz); reverse to (dz,dy,dx)
+      direction = np.array(img.GetDirection()).reshape(3, 3)
+      origin = img.GetOrigin()
+      self.scans = arr
 
-        start_time = time.time()
-        # if aid is not None:
-        #     scans, masks, cls_dict, det_dict, metadata = cache_loader.get_annot_id(aid = aid, dummy = False)
-        # elif sid is not None:
-        scans, masks, cls_dict, det_dict, metadata = self.cache_loader.get_series_uid(sid = sid, dummy = False)
-        end_time = time.time()
-        print(f"Time taken to load CT scan: {end_time - start_time:.4f} seconds")
+      if self.masks is not None:
+        lung_mask = self.masks
+        return arr, lung_mask, spacing, direction, origin
+      img = sitk.GetImageFromArray(arr.astype(np.float32))  # SITK expects (Z,Y,X)
+    # SITK uses (dx,dy,dz). We were given (dz,dy,dx), so reverse
+      img.SetSpacing((float(spacing[2]), float(spacing[1]), float(spacing[0])))
+      img.SetOrigin(origin)
+      if isinstance(direction, np.ndarray):
+          direction = tuple(direction.reshape(-1).tolist())
+      img.SetDirection(direction)
 
-        print("Nodule in z slices: ", masks['nodule'][0].sum(1).sum(1).nonzero().reshape(-1).tolist())
+      # Run model (labels: 0 background, 1/2 lungs; sometimes 3 for trachea depending on model)
+      seg = lungmask_api.apply(img)   # returns SITK image or numpy? -> numpy array (Z,Y,X)
+      # Binarize: lungs are > 0
+      lung_mask = (seg > 0).astype(np.uint8)
+      self.masks = lung_mask
+      return arr, lung_mask, spacing, direction, origin
 
-        bboxes_masks = {}
-        for seg_head in masks.keys():
-            if seg_head == 'lung_mask':
-                continue
-            bboxes_masks[seg_head] = torch.zeros_like(masks[seg_head])
-            for bbox in metadata[f'{seg_head}_all_bboxes_in_sid'].values():
-                bbox = read_bbox(bbox, bbox_type = '3d')
-                z1, y1, x1, z2, y2, x2 = round(bbox.get('z1')), round(bbox.get('y1')), round(bbox.get('x1')), round(bbox.get('z2')), round(bbox.get('y2')), round(bbox.get('x2'))
-                bboxes_masks[seg_head][:, z1:z2+1, y1:y2+1, x1:x2+1] = 1
-        
-        
-        self.scans = scans
-        self.masks= masks
-        self.bboxes_masks = bboxes_masks
-        self.metadata= metadata
-                
 
-        return scans, masks, bboxes_masks, metadata        
 
 
     def merge_nodule_with_ct(self, ct_mat: np.array, nodule_mat: np.array, location: tuple, alpha: float = 0.5, size = 5):
@@ -697,21 +688,21 @@ class CTScan():
         """
         final_min = -1000
         final_max = 500
-        
-        nodule_mat = ((nodule_mat-nodule_mat.min())/(nodule_mat.max()- nodule_mat.min()))*(final_max- final_min) + final_min    
+
+        nodule_mat = ((nodule_mat-nodule_mat.min())/(nodule_mat.max()- nodule_mat.min()))*(final_max- final_min) + final_min
         zc, yc, xc = location
         half = size // 2
         nodule_mat = nodule_mat[25:100, :, :]
         nodule_mask = (nodule_mat > -500)
 
         zoom_factors = np.array([size / s for s in nodule_mat.shape])
-        nodule_rescaled = zoom(nodule_mat, zoom=zoom_factors, order=1)  
+        nodule_rescaled = zoom(nodule_mat, zoom=zoom_factors, order=1)
         mask_rescaled = zoom(nodule_mask.astype(float), zoom=zoom_factors, order=0) > 0.5
 
         z1, z2 = zc - half, zc + half + 1
         y1, y2 = yc - half, yc + half + 1
         x1, x2 = xc - half, xc + half + 1
-        
+
         ct_mat_cp = ct_mat.copy()
 
         if self.nodule.type == "spiculated":
@@ -729,7 +720,7 @@ class CTScan():
         NOT USED FOR SPICULATED NODULE
         """
         smooth_mask = ndi.gaussian_filter(nodule_mask.astype(np.float32), sigma=sigma)
-        smooth_mask = np.clip(smooth_mask, 0.0, 1.0)   
+        smooth_mask = np.clip(smooth_mask, 0.0, 1.0)
         blend = ct_patch*(1-alpha*smooth_mask) + nodule_patch*(alpha*smooth_mask)
         return blend
 
@@ -737,15 +728,15 @@ class CTScan():
     def get_location (self, ct_array: np.array, lung_mask: np.array, region: str = None):
         """
         Select a 3D anatomical location within the lung mask for nodule insertion.
-        This function segments the lung into clinically defined zones—upper, mid, lower—on both sides 
-        and returns representative coordinates based on clinical priors. For `region="stats"`, it samples 
+        This function segments the lung into clinically defined zones—upper, mid, lower—on both sides
+        and returns representative coordinates based on clinical priors. For `region="stats"`, it samples
         a location based on probability-weighted likelihood of missed nodules.
 
         Parameters:
         - ct_array (np.ndarray): Original CT scan volume.
         - lung_mask (np.ndarray): Corresponding binary lung mask.
-        - region (str, optional): Region name to return a specific location. 
-                                If "stats", a random region is selected based on predefined probabilities. 
+        - region (str, optional): Region name to return a specific location.
+                                If "stats", a random region is selected based on predefined probabilities.
                                 If None, all centers are returned.
         Returns:
         - tuple[int, int, int]: (z, y, x) location if a specific region is requested.
@@ -775,42 +766,42 @@ class CTScan():
             "left_basal": None
         }
 
-    # right apical
-        submask = lung_mask[z_position_ranges["upper"][0]: z_position_ranges["upper"][1], :, : lung_mask.shape[2] // 2]
-        #print(submask.shape)
-        coords = (submask == 1).nonzero()
-        rand_idx = np.random.choice(len(coords))
-        #print("coords shape:", coords.shape)
-        #print("coords[rand_idx]:", coords[rand_idx])
-        z_sub, y, x = coords[rand_idx]
-        z = z_sub + z_position_ranges["upper"][0]
-        centers["right_apical"] = z, y, x
+    # # right apical
+    #     submask = lung_mask[z_position_ranges["upper"][0]: z_position_ranges["upper"][1], :, : lung_mask.shape[2] // 2]
+    #     #print(submask.shape)
+    #     coords = (submask == 1).nonzero()
+    #     rand_idx = np.random.choice(len(coords))
+    #     #print("coords shape:", coords.shape)
+    #     #print("coords[rand_idx]:", coords[rand_idx])
+    #     z_sub, y, x = coords[rand_idx]
+    #     z = z_sub + z_position_ranges["upper"][0]
+    #     centers["right_apical"] = z, y, x
 
-    # left apical
-        submask = lung_mask[z_position_ranges["upper"][0]: z_position_ranges["upper"][1], :, lung_mask.shape[2] // 2 :]
-        coords = (submask == 1).nonzero()
-        rand_idx = np.random.choice(len(coords))
-        z_sub, y, x_sub = coords[rand_idx]
-        z = z_sub + z_position_ranges["upper"][0]
-        x = x_sub + lung_mask.shape[2] // 2
-        centers["left_apical"] = z, y, x    
+    # # left apical
+    #     submask = lung_mask[z_position_ranges["upper"][0]: z_position_ranges["upper"][1], :, lung_mask.shape[2] // 2 :]
+    #     coords = (submask == 1).nonzero()
+    #     rand_idx = np.random.choice(len(coords))
+    #     z_sub, y, x_sub = coords[rand_idx]
+    #     z = z_sub + z_position_ranges["upper"][0]
+    #     x = x_sub + lung_mask.shape[2] // 2
+    #     centers["left_apical"] = z, y, x
 
-    # right basal
-        submask = lung_mask[z_position_ranges["lower"][0]: z_position_ranges["lower"][1], :, : lung_mask.shape[2] // 2]
-        coords = (submask == 1).nonzero()
-        rand_idx = np.random.choice(len(coords))
-        z_sub, y, x = coords[rand_idx]
-        z = z_sub + z_position_ranges["lower"][0]
-        centers["right_basal"] = z, y, x
+    # # right basal
+    #     submask = lung_mask[z_position_ranges["lower"][0]: z_position_ranges["lower"][1], :, : lung_mask.shape[2] // 2]
+    #     coords = (submask == 1).nonzero()
+    #     rand_idx = np.random.choice(len(coords))
+    #     z_sub, y, x = coords[rand_idx]
+    #     z = z_sub + z_position_ranges["lower"][0]
+    #     centers["right_basal"] = z, y, x
 
-    # left basal
-        submask = lung_mask[z_position_ranges["lower"][0]: z_position_ranges["lower"][1], :, lung_mask.shape[2] // 2 :]
-        coords = (submask == 1).nonzero()
-        rand_idx = np.random.choice(len(coords))
-        z_sub, y, x_sub = coords[rand_idx]
-        z = z_sub + z_position_ranges["lower"][0]
-        x = x_sub + lung_mask.shape[2] // 2
-        centers["left_basal"] = z, y, x   
+    # # left basal
+    #     submask = lung_mask[z_position_ranges["lower"][0]: z_position_ranges["lower"][1], :, lung_mask.shape[2] // 2 :]
+    #     coords = (submask == 1).nonzero()
+    #     rand_idx = np.random.choice(len(coords))
+    #     z_sub, y, x_sub = coords[rand_idx]
+    #     z = z_sub + z_position_ranges["lower"][0]
+    #     x = x_sub + lung_mask.shape[2] // 2
+    #     centers["left_basal"] = z, y, x
 
 
     # right mid_ventral
@@ -972,7 +963,7 @@ class CTScan():
         for k, v in centers.items()
         }
 
-        self.merge_centers= centers            
+        self.merge_centers= centers
 
         if region is not None:
             if region == "stats":
@@ -984,7 +975,7 @@ class CTScan():
 
 
         return centers
-        
+
 
     def visualize_fake_nodule_region(self, ct_array: np.array, location: tuple, size: tuple = (100, 100, 100)):
         '''
@@ -992,16 +983,16 @@ class CTScan():
         '''
         zc, yc, xc = location
         dz, dy, dx = size[0] // 2, size[1] // 2, size[2] // 2
-        
+
         z_start = max(zc - dz, 0)
         z_end = min(zc + dz + 1, ct_array.shape[0])
         y_start = max(yc - dy, 0)
         y_end = min(yc + dy + 1, ct_array.shape[1])
         x_start = max(xc - dx, 0)
         x_end = min(xc + dx + 1, ct_array.shape[2])
-        
+
         patch = ct_array[z_start:z_end, y_start:y_end, x_start:x_end]
-        
+
         return patch
 
 
@@ -1012,23 +1003,23 @@ class CTScan():
         zn, yn, xn = nodule_bbox.shape
         start = False
         centers= []
-        
-        for z in range(zn): 
+
+        for z in range(zn):
             ys,xs = np.where(nodule_bbox[z] == 1)
             if len(xs)==0:
-                start = False       
+                start = False
             else:
                 if start:
                     continue
                 else:
-                    start = True    
+                    start = True
                     xc, yc = xs.mean(), ys.mean()
                     centers.append((z, yc, xc))
-        
+
         center = centers[index]
         center = int(center[0]), int(center[1]), int(center[2])
         nod = self.visualize_fake_nodule_region(ct_array= ct_array, location=center, size = size)
-        return nod                   
+        return nod
 
     def ct_pipeline(self, nodule: Nodule(), region: str, size = 31, alpha: float = 0.8):
 
@@ -1042,19 +1033,40 @@ class CTScan():
         self.blend_factor = alpha
         nodule_mat = nodule.nodule_mat
 
-        self.load_ct(self.sid)
-        centers = self.get_location(self.scans[0].numpy(), self.masks['lung_mask'][0])
-        merged = self.merge_nodule_with_ct(self.scans[0].numpy(), nodule_mat, centers[region],size = size, alpha= alpha)
+        self.load_ct(self.path)
+        # centers = self.get_location(self.scans, self.masks)
+        centers = {
+            "right_apical": None,
+            "right_mid_ventral": None,
+            "right_hilar": None,
+            "right_mid_lateral": None,
+            "right_mid_dorsal": None,
+            "right_basal": None,
+            "left_apical": None,
+            "left_mid_ventral": (151, 250, 150),
+            "left_hilar": None,
+            "left_mid_lateral": None,
+            "left_mid_dorsal": None,
+            "left_basal": None
+        }
+        merged = self.merge_nodule_with_ct(self.scans, nodule_mat, centers[region],size = size, alpha= alpha)
         merged_nod = self.visualize_fake_nodule_region(merged[0], centers[region], size= (100, 100, 100))
-        existing_nod = self.visualize_real_nodule_region(merged[0], self.bboxes_masks['nodule'][0], index= 2)
+        #existing_nod = self.visualize_real_nodule_region(merged[0], self.bboxes_masks['nodule'][0], index= 2)
         zoom1 = [t / s for t, s in zip((128, 128, 128), merged_nod.shape)]
-        zoom2 = [t / s for t, s in zip((128, 128, 128), existing_nod.shape)]
+        zoom2 = [t / s for t, s in zip((128, 128, 128), merged_nod.shape)]
         merged_nod = zoom(merged_nod, zoom1, order= 1)
-        existing_nod = zoom(existing_nod, zoom2, order= 1)
-        print(f'merged nodule is at: {centers[region]}')   
+        # existing_nod = zoom(existing_nod, zoom2, order= 1)
+        existing_nod = merged_nod
+        print(f'merged nodule is at: {centers[region]}')
 
         self.merged_ct = merged[0]
 
         vis(merged[0], size= 8, title= "CT Scan")
+        vis(self.masks, size= 8, title = "Lung Mask")
         vis(merged_nod, size= 8, title= "fake nodule")
-        vis(existing_nod, size= 8, title= "real nodule")    
+
+
+
+
+
+g_nod, size= 8, title= "real nodule")    

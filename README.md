@@ -966,16 +966,6 @@ Your custom prompt template here...
 - **LIDC-IDRI**: National Cancer Institute
 - **LangChain/LangGraph**: Open-source framework
 
----
-
-## License
-
-This project is submitted for hackathon evaluation. 
-
-For production use, please ensure compliance with:
-- Medical device regulations (FDA, CE marking)
-- HIPAA/GDPR data privacy requirements
-- Institutional review board (IRB) approval for clinical studies
 
 ---
 
@@ -1017,14 +1007,10 @@ llm = OpenAI(request_timeout=60, max_retries=3)
 
 ## Future Enhancements
 
-- [ ] Integration with PACS systems
-- [ ] Multi-language support (Hindi, regional languages)
-- [ ] Mobile app version
-- [ ] Real-time collaborative review
+- [ ] Improve the architecture of the synthetic nodule generation pipeline with a generator-discriminator architecture ( like Generative Adversarial Networks )
+- [ ] Longitudinal tracking (compare scans over time) and nodule growth projections
 - [ ] Integration with EMR systems
-- [ ] Longitudinal tracking (compare scans over time)
-- [ ] 3D visualization of nodules
-- [ ] Automated report generation for radiologists
+- [ ] Improved and more efficient pipelines for 3D visualization of nodules
 
 ---
 

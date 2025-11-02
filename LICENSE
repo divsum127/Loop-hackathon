@@ -1,0 +1,53 @@
+MIT License
+
+Copyright (c) 2025 [Your Name/Team Name]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+MEDICAL DISCLAIMER:
+
+This software is provided for research and educational purposes only. It is NOT 
+intended for use in clinical diagnosis or treatment without proper medical 
+oversight and regulatory approval.
+
+Users must ensure compliance with applicable medical device regulations, data 
+privacy laws (HIPAA, GDPR), and obtain appropriate clinical validation before 
+any production medical use.
+
+The authors and contributors assume no liability for medical decisions made 
+based on this software's output.
+
+ALWAYS consult qualified medical professionals for health-related decisions.
+
+---
+
+THIRD-PARTY COMPONENTS:
+
+This software uses the following open-source components with their respective licenses:
+
+- PyTorch: BSD-style license
+- LangChain: MIT License  
+- Streamlit: Apache License 2.0
+- CT-CLIP models: [Specify license from original authors]
+- CT-RATE dataset: [Specify dataset license]
+- LIDC-IDRI dataset: Creative Commons Attribution 3.0 Unported License
+
+For complete license information of dependencies, see requirements.txt.

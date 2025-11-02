@@ -1,0 +1,75 @@
+# LungSight AI - Complete Requirements
+# Hackathon Submission - November 2025
+
+# ============================================
+# Core Deep Learning & ML
+# ============================================
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+scipy>=1.10.0
+scikit-learn>=1.3.0
+
+# ============================================
+# Medical Imaging Processing
+# ============================================
+nibabel>=5.0.0
+SimpleITK>=2.2.0
+pydicom>=2.4.0
+scikit-image>=0.21.0
+opencv-python>=4.8.0
+
+# ============================================
+# CT-CLIP Model Dependencies (Stage 3)
+# ============================================
+einops>=0.7.0
+timm>=0.9.0
+transformers>=4.30.0
+ftfy>=6.1.0
+regex>=2023.0.0
+
+# ============================================
+# LangChain & AI Recommendations (Stage 4)
+# ============================================
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-openai>=0.2.0
+langgraph>=0.2.0
+langchain-core>=0.3.0
+openai>=1.0.0
+
+# ============================================
+# Streamlit UI
+# ============================================
+streamlit>=1.38.0
+streamlit-chat>=0.1.1
+streamlit-extras>=0.4.0
+plotly>=5.17.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# ============================================
+# Data Processing & Utilities
+# ============================================
+pandas>=2.0.0
+python-dotenv>=1.0.0
+pydantic>=2.9.0
+typing-extensions>=4.12.0
+pillow>=10.4.0
+tqdm>=4.66.0
+requests>=2.31.0
+
+# ============================================
+# Optional: For Model Training (Stages 1 & 2)
+# ============================================
+# tensorboard>=2.14.0
+# wandb>=0.15.0
+# albumentations>=1.3.0
+# monai>=1.3.0
+
+# ============================================
+# Development & Testing
+# ============================================
+pytest>=7.4.0
+black>=23.7.0
+flake8>=6.1.0

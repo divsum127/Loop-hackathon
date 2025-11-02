@@ -1,0 +1,37 @@
+# Core dependencies for CT-CLIP inference
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Transformers and NLP
+transformers>=4.30.0
+
+# Medical imaging
+nibabel>=5.0.0
+SimpleITK>=2.2.0
+
+# Data processing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Utilities
+tqdm>=4.65.0
+pillow>=10.0.0
+
+# Optional: For accelerated inference
+accelerate>=0.20.0
+
+# Configuration
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Visualization (optional)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Note: You may need to install the CT-CLIP specific packages
+# Clone the CT-CLIP repository and install:
+# git clone https://github.com/ibrahimethemhamamci/CT-CLIP.git
+# cd CT-CLIP
+# pip install -e transformer_maskgit/
+# pip install -e .

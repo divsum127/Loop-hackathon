@@ -67,19 +67,8 @@ one issue with 2d flow is that we just can't simply apply flow on every slice si
 
 while applying flow we can access boundary at every step and continuity exists in consecutive boundaries (step_n and step_n+1). Let's say `NUM_STEPS`= n, so to maintain continuity- we start with step_n boudnary at slice 0, step_n-1 at slice 1.... so on till step_0 boundary at central slice. we do the same for lower half of the mask- ending at step_n boundary at lowermost slice.
 
-## How flow is related to compactness
-we simulated flow for all possible combinations of flow_params in the following ranges-
-sigma_ctrl- [4.0, 40.0] (at interval of 2.0)
-sigma_weight- [5.0, 100.0] (at interval of 5.0)
-num_steps- [10.0, 100.0] (at interval of 10.0)
-for each combination we simulated flow 100 times and computed compactness vlaue for the final boundary and got columns for mean and standard deviation of compactness values across 100 iterations. (`3d_flow_data.csv`)
-
 compactness value= `4.pi.(cross sectional area)/(perimeter**2)` (for 2d structures)
 compactness value= `36.pi.(volume**2) / (surface_area **3)` (for 3d structures)
-
-once this dataset got created, given a target compactness value, we need to get the best flow parameters. firstly we filter set of params which gives average compactness within some tolerance (kept 0.03 by default). in these sets, we filter further to get set of params which have compactness standard deviation less than a given value (this values is taken from the 1st paper for each tissue type). now from this subset, we choose the set of params with least number of steps to optimize on time complexity.
-
-Exception- we choose set of PARAMS with highest {`SIGMA_WEIGHT`-`SIGMA_CTRL`} value for `SPICULATED` NODULE. also we avoid smooth blending for spiculated nodules to preserve spikes at nodule boundary
 
 ## Intensity value distribution
 intensity distribution- `c(r) = C * (1 - (r / R)^2)^n` where C is peak intensity value

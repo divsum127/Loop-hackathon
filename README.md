@@ -1,4 +1,8 @@
 # Loop Hackathon- Team Pulmo.ai
+
+## Motivation
+Lung cancer remains one of the deadliest diseases worldwide, largely due to delayed diagnosis and limited access to expert radiological screening. Traditional CT-based screening faces challenges such as data scarcity, variability in image quality, and the lack of integrated decision support that can translate medical findings into actionable insights. Pulmo.ai addresses these gaps by building a four-stage, end-to-end AI pipeline that automates lung cancer screening—from generating synthetic nodules to augment limited datasets, to classifying cancerous versus benign nodules, to explaining CT findings in natural language, and finally providing personalized health recommendations powered by large language models. This integrated approach not only improves model robustness and interpretability but also democratizes early detection and clinical decision-making through an accessible, interactive interface for both clinicians and patients.
+
 ## Overall Pipeline of our Solution
 ![WhatsApp Image 2025-11-02 at 15 15 46_eee0fd8f](https://github.com/user-attachments/assets/e014b8d1-76d3-479d-93c6-fa3ffce990c0)
 ![WhatsApp Image 2025-11-02 at 15 17 10_983db148](https://github.com/user-attachments/assets/dd92424d-e677-4e00-b3a7-5aeaf9cc5d58)
